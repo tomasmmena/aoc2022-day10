@@ -71,3 +71,13 @@ fn main() {
     println!("{} command executed", command_count);
     println!("Samples accumulated: {}", sample_acc);
 }
+
+
+#[test]
+fn test_addx() {
+    let mut signal_value = 0;
+    let op = AddXCommand { value: 10 };
+    op.execute(&mut signal_value);
+
+    assert_eq!(signal_value, 10);
+}
