@@ -56,8 +56,11 @@ fn main() {
     let mut value: isize = 1;
     let mut sample_acc: isize = 0;
     let mut command_count: usize = 0;
+    let mut frame_buffer: [bool; 400] = [false; 400];
     for command in data {
         for _ in 0..command.get_duration() {
+            let crt_x: isize = (current_cycle % 40).try_into().unwrap();
+            frame_buffer[current_cycle -1] = crt_x >= value && crt_x <= value + 2;
             if sample_cycles.contains(&current_cycle) {
                 sample_acc += value * current_cycle as isize;
             }
@@ -70,6 +73,17 @@ fn main() {
 
     println!("{} command executed", command_count);
     println!("Samples accumulated: {}", sample_acc);
+
+    for pix in 0..400 {
+        let displayed = match frame_buffer[pix] {
+            true => "#",
+            false => "."
+        };
+        print!("{}", displayed);
+        if pix % 40 == 39 {
+            println!("");
+        }
+    }
 }
 
 
